@@ -1,0 +1,31 @@
+<launch>
+    <arg name="no"/>
+    <arg name="project" default="lio_sam"/>
+    <arg name="robot"   default="jackal0"/>
+    <arg name="id1"     default="jackal1"/>
+    <arg name="id2"     default="jackal2"/>
+    <arg name="id3"     default="jackal3"/>
+    <arg name="acc_cov" default="0.2" />
+    <arg name="gyr_cov" default="0.2" />
+    <arg name="sensor_height" default="0.0" />   
+    <arg name="imu_init_time" default="15" /> 
+    <arg name="loopClosureEnableFlag" default="false" />  
+            
+    <group>    
+        <node pkg="$(arg project)" type="$(arg project)_imuPreintegration"   name="$(arg project)_imuPreintegration_$(arg robot)"   output="screen"     respawn="true">
+            <param name="/robot_id" type="string" value = "$(arg robot)"/>
+            <param name="/no"       type="int"    value = "$(arg no)"   />
+        </node>
+    </group>
+
+   <node pkg="$(arg project)" type="$(arg project)_mapFusion" name="$(arg project)_mapFusion_$(arg robot)"   output="screen"     respawn="false">
+       <param name="/robot_id"          type="string" value = "$(arg robot)"/>
+       <param name="/id_1"              type="string" value = "$(arg id1)"  />
+       <param name="/id_2"              type="string" value = "$(arg id2)"  />
+       <param name="/id_3"              type="string" value = "$(arg id3)"  />
+       <param name="/no"                type="int"    value = "$(arg no)"   />
+       <param name="sensor_height"      type="double" value = "$(arg sensor_height)"   /> 
+       <param name="/pcm_matrix_folder" type="string" value="$(find lio_sam)/config"/>
+   </node>
+
+</launch>

@@ -1,0 +1,69 @@
+<launch>
+    <arg name="no"      default="1"/>
+    <arg name="project" default="lio_sam"/>
+    <arg name="robot0"	default="jackal0"/>
+    <arg name="robot1"	default="jackal1"/>
+    <arg name="robot2"	default="jackal2"/>
+    
+    <!-- Parameters -->
+    <rosparam file="$(find lio_sam)/config/params.yaml" command="load" />
+    <rosparam file="$(find lio_sam)/src/DiSCo-SLAM/config/mapfusion.yaml" command="load" />
+    <!--rosparam file="$(find lio_sam)/config/params_k.yaml" command="load" /-->
+    <!--rosparam file="$(find lio_sam)/src/DiSCo-SLAM/config/mapfusion_k.yaml" command="load"/-->
+    
+    <!-- fast-lio Parameters -->  
+    <rosparam command="load" file="$(find lio_sam)/config/velodyne16.yaml" />
+    
+    <!--- LOAM robot 0 -->
+    <include file="$(find lio_sam)/launch/include/module_velodyne16.launch" >
+        <arg name="robot" value="$(arg robot0)"/>
+        <arg name="id1" value="$(arg robot1)"/>
+        <arg name="id2" value="$(arg robot2)"/>
+        <arg name="no" value="$(arg no)"/>
+        <arg name="acc_cov" value="0.1" />
+        <arg name="gyr_cov" value="0.1" />
+        <arg name="imu_init_time" value="10" /> 
+        <arg name="loopClosureEnableFlag" value="true" />  
+    </include>
+
+    <!--- LOAM robot 1 -->
+    <include file="$(find lio_sam)/launch/include/module_velodyne16.launch" >
+        <arg name="robot" value="$(arg robot1)"/>
+        <arg name="id1" value="$(arg robot0)"/>
+        <arg name="id2" value="$(arg robot2)"/>
+        <arg name="no" value="$(arg no)"/>
+        <arg name="acc_cov" value="0.1" />
+        <arg name="gyr_cov" value="0.1" />
+        <arg name="imu_init_time" value="10" /> 
+        <arg name="loopClosureEnableFlag" value="true" />  
+    </include>
+
+    <!--- LOAM robot 2 -->
+    <include file="$(find lio_sam)/launch/include/module_velodyne16.launch" >
+        <arg name="robot" value="$(arg robot2)"/>
+        <arg name="id1" value="$(arg robot0)"/>
+        <arg name="id2" value="$(arg robot1)"/>
+        <arg name="no" value="$(arg no)"/> 
+        <arg name="acc_cov" value="5.0" />
+        <arg name="gyr_cov" value="5.0" />
+        <arg name="imu_init_time" value="1" /> 
+        <arg name="loopClosureEnableFlag" value="true" />  
+      </include>
+
+    <!--- Robot State TF -->
+    <!-- <include file="$(find lio_sam)/launch/include/module_robot_state_publisher.launch" /> -->
+
+    <!--- Run Navsat -->
+    <!-- <include file="$(find lio_sam)/launch/include/module_navsat.launch" /> -->
+
+    <!--- Run Rviz-->
+    <node pkg="rviz" type="rviz" name="$(arg project)_rviz" args="-d $(find lio_sam)/launch/include/config/rviz_3.rviz" />
+    
+<!--    Run Communication Simulator-->
+<!--    <node pkg="$(arg project)" name= "$(arg project)_listener" type="listener.py" output="screen"/>-->
+
+
+
+</launch>
+
+

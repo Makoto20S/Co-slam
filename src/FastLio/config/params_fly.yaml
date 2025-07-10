@@ -1,0 +1,52 @@
+lio_sam:
+
+  # Topics
+  pointCloudTopic: "points"               # Point cloud data
+  imuTopic: "imu"                         # IMU data
+  odomTopic: "pose_imu"                   # IMU pre-preintegration odometry, same frequency as IMU
+  gpsTopic: "odometry/gpsz"                   # GPS odometry topic from navsat, see module_navsat.launch file
+
+  # Frames
+  lidarFrame: "base_link"
+  baselinkFrame: "base_link"
+  odometryFrame: "odom"
+  mapFrame: "map"
+
+  # GPS Settings
+  useGpsElevation: false                      # if GPS elevation is bad, set to "false"
+  gpsCovThreshold: 2.0                        # m^2, threshold for using GPS data
+  poseCovThreshold: 25.0                      # m^2, threshold for using GPS data
+
+  # Sensor Settings
+  sensor: 3                                   # 1 for Livox serials LiDAR, 2 for Velodyne LiDAR, 3 for ouster LiDAR, 
+  N_SCAN: 32                                  # number of lidar channel (i.e., 16, 32, 64, 128)
+
+  # Extrinsics
+  extrinsicTrans: [ 0.0, 0.0, 0.0 ]  # lidar->imu
+  
+  extrinsicRot: [1, 0, 0,   # lidar->imu
+                  0, 1, 0,
+                  0, 0, 1]
+
+  # voxel filter paprams
+  mappingSurfLeafSize: 0.2                      # default: 0.4 - outdoor, 0.2 - indoor
+
+  # CPU Params
+  numberOfCores: 8                              # number of cores for mapping optimization
+
+  # Surrounding map ----
+  surroundingkeyframeAddingDistThreshold: 1.0   # meters, regulate keyframe adding threshold
+  surroundingkeyframeAddingAngleThreshold: 0.2  # radians, regulate keyframe adding threshold
+
+  # Loop closure
+  loopClosureFrequency: 1.0                     # Hz, regulate loop closure constraint add frequency
+  historyKeyframeSearchRadius: 5.0             # meters, key frame that is within n meters from current pose will be considerd for loop closure
+  historyKeyframeSearchTimeDiff: 50.0           # seconds, key frame that is n seconds older will be considered for loop closure
+  historyKeyframeSearchNum: 15                  # number of hostory key frames will be fused into a submap for loop closure
+  historyKeyframeFitnessScore: 0.2              # icp threshold, the smaller the better alignment
+
+  # Visualization ----
+  globalMapVisualizationSearchRadius: 1000.0    # meters, global map visualization radius
+  globalMapVisualizationPoseDensity: 2.0        # meters, global map visualization keyframe density
+  globalMapVisualizationLeafSize: 0.4           # meters, global map visualization cloud density
+

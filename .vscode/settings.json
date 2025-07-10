@@ -1,0 +1,24 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/syx/33suo/Co-slam/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/syx/33suo/Co-slam/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "files.associations": {
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "iosfwd": "cpp",
+        "list": "cpp",
+        "*.tcc": "cpp",
+        "core": "cpp",
+        "numericaldiff": "cpp",
+        "condition_variable": "cpp",
+        "tuple": "cpp"
+    }
+}

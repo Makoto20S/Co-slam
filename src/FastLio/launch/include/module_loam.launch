@@ -1,0 +1,37 @@
+<launch>
+    <arg name="no"/>
+    <arg name="project" default="lio_sam"/>
+    <arg name="robot"   default="jackal0"/>
+    <arg name="id1"     default="jackal1"/>
+    <arg name="id2"     default="jackal2"/>
+
+    <group>    
+        <node pkg="$(arg project)" type="$(arg project)_imuPreintegration"   name="$(arg project)_imuPreintegration_$(arg robot)"   output="screen"     respawn="true">
+            <param name="/robot_id" type="string" value = "$(arg robot)"/>
+            <param name="/no"       type="int"    value = "$(arg no)"   />
+        </node>
+        <node pkg="$(arg project)" type="$(arg project)_mapOptmization"      name="$(arg project)_mapOptmization_$(arg robot)"   	output="screen"     respawn="false">
+            <param name="/robot_id" type="string" value = "$(arg robot)"/>
+            <param name="/no"       type="int"    value = "$(arg no)"   />
+        </node>
+    </group>
+
+   <node pkg="$(arg project)" type="$(arg project)_mapFusion" name="$(arg project)_mapFusion_$(arg robot)"   output="screen"     respawn="false">
+       <param name="/robot_id"          type="string" value = "$(arg robot)"/>
+       <param name="/id_1"              type="string" value = "$(arg id1)"  />
+       <param name="/id_2"              type="string" value = "$(arg id2)"  />
+       <param name="/no"                type="int"    value = "$(arg no)"   />
+       <param name="/pcm_matrix_folder" type="string" value="$(find lio_sam)/config"/>
+   </node>
+
+    <node pkg="$(arg project)" type="fastlio_mapping" name="$(arg project)_laserMapping_$(arg robot)" output="screen"    respawn="false" > 
+       <param name="/robot_id"          type="string" value = "$(arg robot)"/>
+       <param name="feature_extract_enable" type="bool" value="0"/>
+       <param name="point_filter_num" type="int" value="4"/>
+       <param name="max_iteration" type="int" value="3" />
+       <param name="filter_size_surf" type="double" value="0.5" />
+       <param name="filter_size_map" type="double" value="0.5" />
+       <param name="cube_side_length" type="double" value="1000" />    
+    </node>
+    
+</launch>

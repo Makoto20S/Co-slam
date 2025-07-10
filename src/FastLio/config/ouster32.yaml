@@ -1,0 +1,36 @@
+common:
+    time_sync_en: false         # ONLY turn on when external time synchronization is really not possible
+    time_offset_lidar_to_imu: 0.0 # Time offset between lidar and IMU calibrated by other algorithms, e.g. LI-Init (can be found in README).
+                                  # This param will take effect no matter what time_sync_en is. So if the time offset is not known exactly, please set as 0.0
+    
+preprocess:        
+    timestamp_unit: 3                 # 0-second, 1-milisecond, 2-microsecond, 3-nanosecond.
+    blind: 0.8
+
+mapping:
+    b_acc_cov: 0.0001
+    b_gyr_cov: 0.0001
+    fov_degree:    180
+    det_range:     40.0
+    extrinsic_est_en:  false      # true: enable the online estimation of IMU-LiDAR extrinsic
+
+publish:
+    path_en:  true
+    scan_publish_en:  true       # false: close all the point cloud output
+    dense_publish_en: true       # false: low down the points number in a global-frame point clouds scan.
+    scan_bodyframe_pub_en: true  # true: output the point cloud scans in IMU-body-frame
+
+pcd_save:
+    pcd_save_en: false
+    interval: -1                 # how many LiDAR frames saved in each pcd file; 
+                                 # -1 : all frames will be saved in ONE pcd file, may lead to memory crash when having too much frames.
+                                 
+# GPS Settings
+usertk: false
+use_rtk_heading: false
+
+useleg: false
+
+recontructKdTree: true
+savemappath: "/home/lj/NR_robot/na_mapping/src/na_mapping/PCD/outdoor2.pcd"
+saveposepath: "/home/lj/NR_robot/na_mapping/src/na_mapping/PCD/outdoor_pose.txt"

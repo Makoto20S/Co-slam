@@ -1,0 +1,59 @@
+<launch>
+    <arg name="no"      default="1"/>
+    <arg name="project" default="lio_sam"/>
+    <arg name="robot0"	default="ouster0"/>
+    <arg name="robot1"	default="ouster1"/>
+    <arg name="robot2"	default="ouster2"/>
+    
+    <!-- Parameters -->
+    <!--rosparam file="$(find lio_sam)/config/params.yaml" command="load" /-->
+    <!--rosparam file="$(find lio_sam)/src/DiSCo-SLAM/config/mapfusion.yaml" command="load" /-->
+    <rosparam file="$(find lio_sam)/config/params_33.yaml" command="load" />
+    <rosparam file="$(find lio_sam)/src/DiSCo-SLAM/config/mapfusion_33.yaml" command="load"/>
+    
+    <!-- fast-lio Parameters -->  
+    <rosparam command="load" file="$(find lio_sam)/config/ouster64.yaml" />
+    
+    <!--- LOAM robot 0  履带-->
+    <include file="$(find lio_sam)/launch/include/module_ouster64.launch" >
+        <arg name="robot" value="$(arg robot0)"/>
+        <arg name="id1" value="$(arg robot1)"/>
+        <arg name="id2" value="$(arg robot2)"/>
+        <arg name="no" value="$(arg no)"/>
+        <arg name="acc_cov" value="0.001" />
+        <arg name="gyr_cov" value="0.0001" />
+        <arg name="sensor_height" value="0.96" />
+        <arg name="imu_init_time" value="10" />
+        <arg name="loopClosureEnableFlag" value="true" />  
+    </include>
+
+    <!--- LOAM robot 1 轮式-->
+    <include file="$(find lio_sam)/launch/include/module_ouster64.launch" >
+        <arg name="robot" value="$(arg robot1)"/>
+        <arg name="id1" value="$(arg robot0)"/>
+        <arg name="id2" value="$(arg robot2)"/>
+        <arg name="no" value="$(arg no)"/>
+        <arg name="acc_cov" value="0.001" />
+        <arg name="gyr_cov" value="0.0001" />
+        <arg name="sensor_height" value="0.87" />
+        <arg name="imu_init_time" value="10" /> 
+        <arg name="loopClosureEnableFlag" value="true" />  
+    </include>
+
+    <!--- Robot State TF -->
+    <!-- <include file="$(find lio_sam)/launch/include/module_robot_state_publisher.launch" /> -->
+
+    <!--- Run Navsat -->
+    <!-- <include file="$(find lio_sam)/launch/include/module_navsat.launch" /> -->
+
+    <!--- Run Rviz-->
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find lio_sam)/launch/include/config/ouster.rviz" />
+
+<!--    Run Communication Simulator-->
+<!--    <node pkg="$(arg project)" name= "$(arg project)_listener" type="listener.py" output="screen"/>-->
+
+
+
+</launch>
+
+

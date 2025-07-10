@@ -1,0 +1,27 @@
+<launch>
+    <arg name="no"/>
+    <arg name="project" default="lio_sam"/>
+    <arg name="robot"   default="jackal0"/>
+    <arg name="id1"     default="jackal1"/>
+    <arg name="id2"     default="jackal2"/>
+    <arg name="id3"     default="jackal3"/>
+    <arg name="acc_cov" default="0.2" />
+    <arg name="gyr_cov" default="0.2" /> 
+    <arg name="imu_init_time" default="15" /> 
+    <arg name="loopClosureEnableFlag" default="false" />  
+
+    <node pkg="$(arg project)" type="fastlio_mapping" name="$(arg project)_laserMapping_$(arg robot)" output="screen"    respawn="false" > 
+       <param name="/robot_id"          type="string" value = "$(arg robot)"/>
+       <param name="feature_extract_enable" type="bool" value="0"/>
+       <param name="point_filter_num" type="int" value="2"/>
+       <param name="max_iteration" type="int" value="3" />
+       <param name="filter_size_surf" type="double" value="0.3" />
+       <param name="filter_size_map" type="double" value="0.4" />
+       <param name="cube_side_length" type="double" value="1000" />
+       <param name="acc_cov" type="double" value="$(arg acc_cov)" />
+       <param name="gyr_cov" type="double" value="$(arg gyr_cov)" />
+       <param name="imu_init_time" type="int" value="$(arg imu_init_time)" />  
+       <param name="loopClosureEnableFlag" type="bool" value="$(arg loopClosureEnableFlag)" />      
+    </node>
+
+</launch>
